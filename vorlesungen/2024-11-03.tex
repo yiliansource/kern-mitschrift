@@ -1,3 +1,153 @@
 \section{Einführung}
 
-Hello World!
+\begin{definition}
+    Sei $\Omega \neq \emptyset$, $H \leq \mathbb{K}^\Omega$, wobei $\mathbb{K} \in \{ \R, \C \}$. Sei $(\cdot, \cdot)_H$ ein positiv definites Skalarprodukt so, dass $(H, (\cdot, \cdot)_H)$ ein Hilbertraum ist.
+
+    Dann heißt $(H, (\cdot, \cdot)_H)$ \emph{kernreproduzierender Hilbertraum} (kurz RKHS), falls für alle $t \in \Omega$ die Abbildungen
+    $$ \mapping{\pi_t}{H & \to & \mathbb{K}}{f & \mapsto & f(t)} $$
+    beschränkt sind.
+\end{definition}
+
+\begin{remark}
+    In Hilberträumen $(H, (\cdot, \cdot))$ ist die Abbildung
+    $$ \mapping{\Phi}{H & \to & H'}{x & \mapsto & (\cdot, x)} $$
+    stets bijektiv, konjugiert linear und isometrisch. Somit ist es sinnvoll, für $t \in \Omega$ zu setzen
+    $$ k_t^H \coloneqq \Phi^{-1}(\pi_t). $$
+    Ist klar um welchen Hilbertraum es geht, so schreiben wir oft auch nur $k_t$.
+    Damit gilt für $f \in H$ stets $ f(t) = \pi_t(f) = (f, k_t^H) $ und $\Vert k_t^H \Vert = \Vert \pi_t $.
+\end{remark}
+
+\begin{example}
+    Wir betrachten den Raum
+    $$ \ell^2(I, \R) = \{ (x_i)_{i \in I} : \sum_{i \in I} \vert x_i \vert^2 < +\infty \} \leq \R^I, $$
+    versehen mit dem Skalarprodukt
+    $$ ((x_i), (y_i))_{\ell^2} = \sum_{i \in I} x_i y_i. $$
+    Sei $j \in I$ beliebig, so ist die Abbildung $\pi_j ((x_i)) = x_j$ klarerweise beschränkt, womit $(\ell^2(I, \R), (\cdot, \cdot)_{\ell^2})$ einen kernreproduzierenden Hilbertraum bildet. Es gilt
+    $$ k_j^{\ell^2(I, \R)} = \delta_j (= (\delta_{ij})_{i \in I}). $$
+\end{example}
+
+\begin{example}
+    Wir betrachten $\C_{<n}[z] \leq \C^\R$ mit dem Skalarprodukt
+    $$ (f, g) = \int_{-1}^5 f(t) \overline{g(t)} \diff t. $$
+    Da dieser Raum endlichdimensional ist, sind die Abbildungen $\pi_t$ beschränkt, womit ein RKHS vorliegt. Für jedes $t \in \R$ existiert also ein $k_t \in \C_{<n}[z]$ mit
+    $$ p(t) = \int_{-1}^5 p(s) \overline{k_t(s)} \diff s. $$
+\end{example}
+
+\begin{lemma}
+    Sei $H \leq \K^\Omega$ ein RKHS. Dann gilt
+    $$ \clspan \{ k_t : t \in \Omega \} = H. $$
+\end{lemma}
+
+\begin{proof}
+    Sei $f \in \{ k_t : t \in \Omega \}^\perp$, so gilt für alle $t \in \Omega$
+    $$ f(t) = (f, k_t) = 0, $$
+    womit $f = 0 \in H$ folgt.
+\end{proof}
+
+\begin{corollary}
+    Sei $H \leq \C^\Omega, \Omega \subseteq \C$ nichtleer und offen, und seien alle $f \in H$ holomorph in $\Omega$. Habe nun $M \subseteq \Omega$ einen Häufungspunkt in $\Omega$. Dann gilt
+    $$ \clspan \{ k_t : t \in M \} = H. $$
+\end{corollary}
+
+\begin{proof}
+    Sei $f \perp k_t$ für alle $t \in \Omega$, so folgt $f(z) = 0$ für alle $z \in M$ und damit $f = 0$.
+\end{proof}
+
+\begin{remark}
+    Sei $(G, (\cdot, \cdot)_G)$ ein Hilbertraum über $\K$, sowie $\Omega \neq \emptyset$ und $k : \Omega \to G$. Dann definieren wir:
+    \begin{itemize}
+        \item $Z \coloneqq \clspan \{ k(t) : t \in \Omega \}$
+        \item $\Psi : G \to \K^\Omega, \Psi(x) = (t \mapsto (x, k(t))_G)$
+    \end{itemize}
+    Dann ist $Z$ ein abgeschlossener Unterraum von $G$ und $\ker \Psi = Z^\perp$. Weiters können wir $\Psi = \Psi|_Z \circ P_Z$ schreiben, wobei $P_Z$ die orthogonale Projektion von auf $Z$ bezeichnet.
+
+    Wir definieren $H \coloneqq \Psi(G) = \Psi(Z) \leq \K^\Omega$, sowie für $f, g \in H$
+    $$ (f, g)_H \coloneqq ((\Psi|_Z)^{-1}(f), (\Psi|_Z)^{-1}(g))_G. $$
+    Damit ist $(H, (\cdot, \cdot)_H)$ ein Hilbertraum.
+    
+    Für $f \in H$ existiert ein $z \in Z$ mit $f = \Psi(z)$ und es gilt
+    $$ \pi_t(f) = f(t) = \Psi(z)(t) = (z, k(t))_G = (\Psi(z), \Psi(k(t)))_H = (f, \Psi(k(t)))_H. $$
+    Damit ist also Punktauswertung stetig, und es gilt $k_t^H = \Psi(k(t))$.
+\end{remark}
+
+\begin{example}
+    Wir wollen die vorige Bemerkung auf den Raum $G = \ell^2(\N_0, \C)$ und
+    $$ \mapping{k}{\D & \to & \ell^2(\N_0)}{k(w) & = & (\overline{w}^n)_{n \in \N_0}} $$
+    anwenden. Es gilt
+    $$ \Vert k(w) \Vert_{\ell^2}^2 = \sum_{n = 0}^\infty \vert \overline{w}^n \vert^2 = \frac{1}{1 - \vert w \vert^2} < +\infty. $$
+    Wir betrachten die Abbildung
+    $$ \mapping{\Psi}{\ell^2(\N_0) & \to & \C^\D}{(a_n)_{n \in \N_0} & \mapsto & (z \mapsto \sum_{n=0}^\infty a_n z^n)}. $$
+    und setzen $H^2(\D) \coloneqq \Psi(\ell^2(\N_0))$.
+
+    Ist nun $(a_n) \in \ker \Psi$, so ist dies äquivalent zu $(a_n) = 0$, womit (mit den Bezeichnungen obiger Bemerkung) $Z = \ell^2(\N_0)$ gilt.
+
+    Damit ist $(H^2(\D), (\cdot, \cdot)_{H^2(\D)})$ ein Hilbertraum und es gilt
+    $$ k_w^{H^2(\D)} = \Psi(k(w)) \in \C^\D. $$
+    Tatsächlich gilt
+    $$ k_w^{H^2(\D)}(z) = \Psi(k(w))(z) = (k(w), k(z))_{\ell^2} = \sum_{n=0}^\infty \overline{w}^n \overline{\overline{z}^n} = \sum_{n=0}^\infty z^n \overline{w}^n = \frac{1}{1 - z \overline{w}}. $$
+\end{example}
+
+\begin{remark}
+Auf dem Raum $H^2(\D)$ kann Operatortheorie betrieben werden. Wir betrachten den Rechtsshiftoperator $R : \ell^2(\N_0) \to \ell^2(\N_0)$. Wir setzen $M_\cdot = \Psi \circ R \circ \Psi^{-1}$. Es gilt (mit $(a_n)_{n \in \N_0} \coloneqq \Psi^{-1}(f)$)
+\begin{align*}
+    M_\cdot (f)(z) &= (M_\cdot f, k_z^{H^2(\D)})_{H^2(\D)} = (\Psi(R\Psi^{-1}(f)), \Psi(k(z)))_{H^2(\D)} = \\ &= (R(\Psi^{-1}(f)), k(z))_{\ell^2} = \sum_{n=1}^\infty a_{n-1} z^n = z \sum_{n=0}^\infty a_n z^n = z f(z).
+\end{align*}
+\end{remark}
+
+\begin{remark}
+    Wir behaupten, dass
+    $$ H^2(\D) = \{ f \in \mathrm{Hol}(\D) : \sup_{r \in [0, 1)} \frac{1}{2 \pi} \int_0^{2 \pi} \vert f(re^{it}) \vert^2 \diff t < +\infty \}. $$
+
+    Ist $f \in \mathrm{Hol}(\D)$, so können wir $f(z) = \sum_{n=0}^\infty a_n z^n$ schreiben. Schreiben wir $z = z(t) = re^{it}$, so gilt
+    \begin{align*}
+        \int_0^{2 \pi} \vert f(re^{it}) \vert^2 \diff t &= \int_0^{2 \pi} \lim_{N \to \infty} \left( \sum_{n=0}^N a_n r^n e^{itn} \right) \overline{\left( \sum_{m=0}^N a_m r^m e^{itm} \right) } \diff t = \\
+        &= \lim_{N \to \infty} \sum_{m,n=0}^N a_n \overline{a_m} r^{n+m} \int_{0}^{2\pi} e^{it(n-m)} \diff t = \sum_{n=0}^\infty \vert a_n \vert^2 r^{2n}.
+    \end{align*}
+    Für $r \to 1$ konvergiert dieser Ausdruck gegen $\sum_{n=0}^\infty \vert a_n \vert^2 \in [0, +\infty]$.
+
+    TODO: Andere Richtung.
+\end{remark}
+
+\begin{remark}
+    Sei $h : \D \to \C$ holomorph mit $ \Vert h \Vert_\infty < +\infty $. Wir betrachten den Operator
+    $$ \mapping{M_h}{H^2(\D) & \to & H^2(\D)}{f & \mapsto & h \cdot f}. $$
+    Es gilt
+    $$ \sup_{r \in [0, 1)} \frac{1}{2 \pi} \int_0^{2 \pi} \vert h(re^{it}) f(re^{it}) \vert^2 \diff t \leq \sup_{r \in [0, 1)} \Vert h \Vert_\infty^2 \int_0^{2 \pi} \vert f(re^{it}) \vert^2 \diff t < +\infty. $$
+    Damit folgt $ \Vert M_h f \Vert_{H^2(\D)} \leq \Vert h \Vert_\infty \cdot \Vert f \Vert_{H^2(\D)} $, womit $M_h$ ein beschränkter Operator mit Abbildungsnorm höchstens $\Vert h \Vert_\infty$ ist.
+\end{remark}
+
+\begin{example}
+    Wir betrachten $G = \ell^2(\N_0, \C)$, sowie die Abbildung $k : \D \to \ell^2(\N_0)$, wobei $k(w) = (c_n)_{n \in \N_0}$ mit $c_0 = 0, c_n = \frac{\overline{w}}{\sqrt{n}}$. Dann ist
+    $$ \Psi((a_n)) \cdot z = ((a_n), k(z))_{\ell^2} = \sum_{n=1}^\infty \frac{a_n}{\sqrt{n}} z^n. $$
+    Es folgt
+    $$ Z = (\ker \Psi)^\perp = \{ (a_n)_{n \in \N_0} : a_0 = 0 \} $$
+    und
+    $$ \mathscr{D} = \Psi(\ell^2(\N_0)) = \Psi(Z) $$
+    liefert den \emph{Dirichletraum}. Weiters gilt
+    $$ k_w^\mathscr{D} = \Psi(k(w))(z) = (k(w), k(z))_{\ell^2} = \sum_{n=1}^\infty \frac{\overline{w}^n z^n}{n} = \log \frac{1}{1 - z \overline{w}}, $$
+    wobei $\log$ die Umkehrabbildung der komplexen Exponentialfunktion ist. Da $1 - z \overline{w}$ in der rechten Halbebene liegt, liegt auch $\frac{1}{1 - z\overline{w}}$ in dieser, womit die letzte Gleichheit gerechtfertigt ist. 
+\end{example}
+
+\begin{definition}
+    Sei $H \leq \K^\Omega$ ein RKHS. Wir definieren den \emph{reproduzierenden Kern} von $(H, (\cdot, \cdot)_H)$ als
+    $$ \mapping{K_H}{\Omega \times \Omega & \to & \K}{(s, t) & \mapsto & (k_t^H, k_s^H)_H}. $$
+\end{definition}
+
+\begin{theorem}
+    Sei $\Omega$ eine nichtleere Menge.
+    \begin{itemize}
+        \item Seien $H, L \leq \K^\Omega$ RKHS. Gilt $K_H = K_L$, so folgt bereits $H = L$.
+        \item Sei $H \leq \K^\Omega$ ein RKHS. Dann gilt $K_H(s, t) = \overline{K_t(t, s)}$ und für $N \in \N, t_1, \hdots, t_N \in \Omega, \lambda_1, \hdots, \lambda_N \in \K$
+        $$ \sum_{m,n=1}^N \overline{\lambda_m} \lambda_n K_H(t_m, t_n) \geq 0. $$
+        \item Erfüllt eine Abbildung $K : \Omega \times \Omega \to \K$ eine Abbildung wie in dem vorigen Punkt, dann existiert ein RKHS $H$ mit $K_H = K$.
+    \end{itemize}
+\end{theorem}
+
+\begin{example}
+    Sei $(G, (\cdot, \cdot)_G)$ ein Hilbertraum. Wir setzen $\Omega = G$ und betrachten
+    $$ \mapping{k}{\Omega & \to & G}{y & \mapsto & y}, $$
+    also $k = \mathrm{id_G}$. Wir setzen
+    $$ \Psi : G \to \K^G, \Psi(y)(x) = (y, x)_G, $$
+    so gilt $\ker \Psi = \{ 0 \}$ und $\Psi$ bildet bijektiv, linear und isometrisch auf $H \coloneqq \Psi(G)$ ab. Nun gilt $\Psi(y) = (y, \cdot)_G$ und
+    $$ K_H(x, y) = (k_y^H, k_x^H)_H = (k(y), k(x)) = (y, x)_G. $$
+\end{example}
